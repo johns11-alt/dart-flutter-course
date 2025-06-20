@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/answer_button.dart';
 import 'package:quiz_app/data/questions.dart';
-import 'package:quiz_app/models/quiz_question.dart';
+
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({super.key});
@@ -17,7 +17,9 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   answerQuestion() {
     // currectQuestionIndex += 1;  (also correct!)
     // currectQuestionIndex--;     (reduce by 1)
-    currectQuestionIndex++;
+    setState(() {
+      currectQuestionIndex++;
+    });
   }
 
   @override
