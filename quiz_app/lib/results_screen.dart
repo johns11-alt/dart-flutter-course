@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/data/questions.dart';
 import 'package:quiz_app/questions_summary.dart';
 
-
 class ResultsScreen extends StatelessWidget {
   const ResultsScreen({super.key, required this.chosenAnswers});
 
@@ -13,11 +12,11 @@ class ResultsScreen extends StatelessWidget {
 
     for (var i = 0; i < chosenAnswers.length; i++) {
       summary.add({
-        'question_index': i, 
+        'question_index': i,
         'question': questions[i].text,
         'correct_answer': questions[i].answers[0],
-        'user_answer': chosenAnswers[i]
-        });
+        'user_answer': chosenAnswers[i],
+      });
     }
 
     return summary;
@@ -26,25 +25,30 @@ class ResultsScreen extends StatelessWidget {
   @override
   Widget build(context) {
     const gap = SizedBox(height: 30);
+    final summaryData = getSummaryData();
+    final numTotalQuestions = questions.length;
+    // print(numTotalQuestions);
+    final numCorrectQuestions = summaryData.where((data) {
+      return data['user_answer'] == data['correct_answer'];
+    }).length;
 
     return SizedBox(
       width: double.infinity,
       // child: SingleChildScrollView(
-        child: Container(
+      child: Container(
         margin: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('You answered X out of Y answers correctly!'),
+            Text('You answered $numCorrectQuestions out of $numTotalQuestions answers correctly!'),
             gap,
             QuestionsSummary(getSummaryData()),
             gap,
             TextButton(onPressed: () {}, child: Text("Restart Quiz!")),
           ],
         ),
-      // ),
+        // ),
       ),
-      
     );
   }
 }
