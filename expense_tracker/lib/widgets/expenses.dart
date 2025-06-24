@@ -36,8 +36,8 @@ class _ExpensesState extends State<Expenses> {
     );
   }
 
-  void _addExpense(Expense expence) {
-    _registeredExpenses.add(expence);
+  void _addExpense(Expense expense) {
+    _registeredExpenses.add(expense);
   }
 
   @override
