@@ -35,12 +35,13 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
-  // void _submitExpenseData() {
-  //   final enteredAmount = _amountController.text;
-  //   if (_titleController.text.trim().isEmpty) {
-  //     //show error message
-  //   }
-  // }
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(_amountController.text);
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty || amountIsInvalid || _selectedDate == null) {
+      //show error message
+    }
+  }
 
   @override
   void dispose() {
