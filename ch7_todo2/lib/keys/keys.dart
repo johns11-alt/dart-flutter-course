@@ -70,6 +70,8 @@ class _KeysState extends State<Keys> {
               // for (final todo in _orderedTodos) TodoItem(todo.text, todo.priority),
               for (final todo in _orderedTodos)
                 CheckableTodoItem(
+                  // key: ValueKey(todo.text),   //brings the text as the key
+                  key: ObjectKey(todo),          //brings the whole value as key
                   todo.text,
                   todo.priority,
                 ),
