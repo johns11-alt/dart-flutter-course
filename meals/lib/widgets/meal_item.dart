@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import 'package:meals/widgets/meal_item_trait.dart';
 import 'package:meals/models/meal.dart';
 
 class MealItem extends StatelessWidget {
@@ -24,34 +25,48 @@ class MealItem extends StatelessWidget {
               image: NetworkImage(meal.imageUrl),
               fit: BoxFit.cover,
               height: 200,
-              width: double.infinity
+              width: double.infinity,
             ),
             Positioned(
               bottom: 0,
               left: 0,
               right: 0,
-              child: Container(    
+              child: Container(
                 color: Colors.black54,
-                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 44),
-                child: Column(children: [
-                  Text(
-                    meal.title, 
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    )
+                padding: const EdgeInsets.symmetric(
+                  vertical: 6,
+                  horizontal: 44,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, // Add to avoid unbounded height
+                  children: [
+                    Text(
+                      meal.title,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  const SizedBox(height: 12),
-                  Row(children: [
-
-                  ],)
-                ],)
-              ))
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MealItemTrait(
+                          icon: Icons.schedule,
+                          label: '${meal.duration} min',
+                        ),
+                        // Add other MealItemTrait widgets here if needed
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
