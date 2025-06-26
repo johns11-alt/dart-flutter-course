@@ -41,8 +41,12 @@ class MealsScreen extends StatelessWidget {
     if (meals.isNotEmpty) {
       content = ListView.builder(
         itemCount: meals.length,
-        itemBuilder: (ctx, index) =>
-            MealItem(meal: meals[index], onSelectMeal: selectMeal),
+        itemBuilder: (ctx, index) => MealItem(
+          meal: meals[index],
+          onSelectMeal: (context, meal) {
+            selectMeal(context, meal);
+          },
+        ),
       );
     }
 
