@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:meals/screens/meal_details.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'package:meals/widgets/meal_item_trait.dart';
 import 'package:meals/models/meal.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem({super.key, required this.meal, required this.onSelectMeal});
+  const MealItem({
+    super.key,
+    required this.meal,
+    required this.onSelectMeal,
+  });
 
   final Meal meal;
-  final void Function(BuildContext context, Meal meal) onSelectMeal;
+  final void Function(Meal meal) onSelectMeal;
 
   String get complexityText {
     return meal.complexity.name[0].toUpperCase() +
@@ -25,12 +28,14 @@ class MealItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
         onTap: () {
-          onSelectMeal(context, meal);
+          onSelectMeal(meal);
         },
         child: Stack(
           children: [
@@ -47,20 +52,16 @@ class MealItem extends StatelessWidget {
               right: 0,
               child: Container(
                 color: Colors.black54,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 6,
-                  horizontal: 44,
-                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 6, horizontal: 44),
                 child: Column(
-                  mainAxisSize:
-                      MainAxisSize.min, // Add to avoid unbounded height
                   children: [
                     Text(
                       meal.title,
                       maxLines: 2,
                       textAlign: TextAlign.center,
                       softWrap: true,
-                      overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.ellipsis, // Very long text ...
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -71,25 +72,26 @@ class MealItem extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(width: 12),
                         MealItemTrait(
                           icon: Icons.schedule,
                           label: '${meal.duration} min',
                         ),
                         const SizedBox(width: 12),
-                        MealItemTrait(icon: Icons.work, label: complexityText),
+                        MealItemTrait(
+                          icon: Icons.work,
+                          label: complexityText,
+                        ),
                         const SizedBox(width: 12),
                         MealItemTrait(
                           icon: Icons.attach_money,
                           label: affordabilityText,
-                        ),
-                        // Add other MealItemTrait widgets here if needed
+                        )
                       ],
                     ),
                   ],
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
