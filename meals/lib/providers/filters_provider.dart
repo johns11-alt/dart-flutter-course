@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:meals/providers/meals_provider.dart';
 
 enum Filter {
@@ -22,7 +23,7 @@ class FiltersNotifier extends StateNotifier<Map<Filter, bool>> {
   }
 
   void setFilter(Filter filter, bool isActive) {
-    //state[filter] = isActive; //not allowed => mutating state
+    // state[filter] = isActive; // not allowed! => mutating state
     state = {
       ...state,
       filter: isActive,
@@ -32,7 +33,8 @@ class FiltersNotifier extends StateNotifier<Map<Filter, bool>> {
 
 final filtersProvider =
     StateNotifierProvider<FiltersNotifier, Map<Filter, bool>>(
-        (ref) => FiltersNotifier());
+  (ref) => FiltersNotifier(),
+);
 
 final filteredMealsProvider = Provider((ref) {
   final meals = ref.watch(mealsProvider);
