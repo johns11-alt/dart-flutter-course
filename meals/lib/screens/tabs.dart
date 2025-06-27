@@ -6,8 +6,9 @@ import 'package:meals/providers/meals_provider.dart'; //import provider
 // import 'package:meals/data/dummy_data.dart';   //not needed
 
 import 'package:meals/providers/favorites_provider.dart';
+import 'package:meals/providers/filters_provider.dart';
 
-import 'package:meals/models/meal.dart';
+// import 'package:meals/models/meal.dart';
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/filters.dart';
 import 'package:meals/screens/meals.dart';
