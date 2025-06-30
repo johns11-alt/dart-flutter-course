@@ -22,18 +22,20 @@ class _NewItemState extends State<NewItem> {
           child: Column(
             children: [
               TextFormField(
-                  maxLength: 50,
-                  decoration: const InputDecoration(label: Text('Name')),
-                  validator: (value) {
-                    return 'Test...';
-                  },
-                ),
+                maxLength: 50,
+                decoration: const InputDecoration(label: Text('Name')),
+                validator: (value) {
+                  return 'Test...';
+                },
+              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(
                     child: TextFormField(
-                      decoration: const InputDecoration(label: Text('Quantity')),
+                      decoration: const InputDecoration(
+                        label: Text('Quantity'),
+                      ),
                       initialValue: '1',
                     ),
                   ),
@@ -62,6 +64,14 @@ class _NewItemState extends State<NewItem> {
                   ),
                 ],
               ), //instead of TextField()
+              SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(onPressed: () {}, child: const Text('Reset')),
+                  ElevatedButton(onPressed: () {}, child: Text('Add Item')),
+                ],
+              ),
             ],
           ),
         ),
