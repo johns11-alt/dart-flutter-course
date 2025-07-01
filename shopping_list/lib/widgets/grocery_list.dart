@@ -31,9 +31,12 @@ class _GroceryListState extends State<GroceryList> {
       'flutter-prep-a729f-default-rtdb.firebaseio.com',
       'shopping-list.json',
     );
-    final response = await http.get(url);
+    
 
-    if (response.statusCode >= 400) {
+    try{
+      final response = await http.get(url);
+
+      if (response.statusCode >= 400) {
       setState(() {
         _error = 'Failed to fetch data. Please try again later.';
       });
@@ -72,6 +75,15 @@ class _GroceryListState extends State<GroceryList> {
     setState(() {
       _groceryItems = loadedItems;
     });
+    } catch (err) {
+      setState(() {
+        _error = 'Something went wrong. Please try again later.';
+      });
+    }
+
+    // throw Exception('An error occured');  //code below not executed
+
+    
   }
 
   void _addItem() async {
