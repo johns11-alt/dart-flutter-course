@@ -38,9 +38,15 @@ class _GroceryListState extends State<GroceryList> {
         _error = 'Failed to fetch data. Please try again later.';
       });
     }
-
     print(response);
     print(response.body);
+
+    if (response.body == 'null') {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
 
     //from import convert
     final Map<String, dynamic> listData = json.decode(response.body);
