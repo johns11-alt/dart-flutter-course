@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:favorite_places/models/place.dart';
@@ -17,6 +18,17 @@ class _LocationInputState extends State<LocationInput> {
   PlaceLocation? _pickedLocation;
 
   var _isGettingLocation = false;
+
+  String get locationImage {
+    if (_pickedLocation == null) {
+      return'';
+    }
+    final lat = _pickedLocation!.latitude;
+    final lng = _pickedLocation!.longitude;
+    const apiKey = 'AIzaSyCqHkKIk7LFJuK7_Cc0rP5isCgGuJG7Bok';
+
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:S%7C$lat,$lng&key=$apiKey';
+  }
 
   void _getCurrentLocation() async {
     Location location = Location();
@@ -82,6 +94,15 @@ class _LocationInputState extends State<LocationInput> {
           .copyWith(color: Theme.of(context).colorScheme.onSurface),
     );
 
+    if (_pickedLocation != null) {
+      previewContent = Image.network(
+        locationImage, 
+        fit: BoxFit.cover, 
+        width: double.infinity, 
+        height: double.infinity
+        );
+    }
+
     if (_isGettingLocation) {
       previewContent = const CircularProgressIndicator();
     }
@@ -99,7 +120,8 @@ class _LocationInputState extends State<LocationInput> {
                         .colorScheme
                         .primary
                         .withOpacity(0.2))),
-            child: previewContent),
+            child: previewContent
+            ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
