@@ -16,9 +16,10 @@ class Place {
   Place({
     required this.title, 
     required this.image, 
-    required this.location
+    required this.location,
+    String? id
     }) 
-    : id = uuid.v4();
+    : id = id ?? uuid.v4();
 
   final String id;
   final String title;
