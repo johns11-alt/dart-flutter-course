@@ -19,6 +19,8 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  LatLng? _pickedLocation;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,16 +35,22 @@ class _MapScreenState extends State<MapScreen> {
               )
           ]),
       body: GoogleMap(
+        onTap: (position) {
+          setState(() {
+            _pickedLocation = position;
+          });
+        },
         initialCameraPosition: CameraPosition(
           target: LatLng(widget.location.latitude, widget.location.longitude),
           zoom: 16,
         ),
         //  {} defines a set, it is a pair ov values, not accepts duplicates
-        markers: {
+        markers: (_pickedLocation == null && widget.isSelecting) ? {} : {
           Marker(
-            markerId: MarkerId('m1'),
-            position: LatLng(widget.location.latitude, widget.location.longitude),
-            )
+            markerId: const MarkerId('m1'),
+            // ?? bellow checks if var is null
+            position: _pickedLocation ?? LatLng(widget.location.latitude, widget.location.longitude),
+          )
         },
       ),
     );
