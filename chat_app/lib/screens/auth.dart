@@ -7,11 +7,10 @@ class AuthScreen extends StatefulWidget {
   State<AuthScreen> createState() {
     return _AuthScreenState();
   }
-
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-
+  var _isLogin = true;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +26,10 @@ class _AuthScreenState extends State<AuthScreen> {
                   top: 30,
                   bottom: 20,
                   left: 20,
-                  right: 20
+                  right: 20,
                 ),
                 width: 200,
-                child: Image.asset('assets/images/chat.png')
+                child: Image.asset('assets/images/chat.png'),
               ),
               Card(
                 margin: EdgeInsets.all(20),
@@ -50,17 +49,40 @@ class _AuthScreenState extends State<AuthScreen> {
                             textCapitalization: TextCapitalization.none,
                           ),
                           TextFormField(
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                            ),
+                            decoration: InputDecoration(labelText: 'Password'),
                             obscureText: true,
-                          )
-                      ],),
+                          ),
+                          const SizedBox(height: 12),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context)
+                                .colorScheme.primaryContainer
+                            ),
+                            child: Text( _isLogin ? 'Login' : 'Sign Up'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                // _isLogin = _isLogin ? false : true;
+                                // good but shorter is:
+                                _isLogin = !_isLogin;
+                              });
+                            },
+                            child: Text(
+                              _isLogin
+                                  ? 'Create an account'
+                                  : 'I already have an account.',
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    ),
+                  ),
                 ),
-              )
-          ],)
+              ),
+            ],
+          ),
         ),
       ),
     );
