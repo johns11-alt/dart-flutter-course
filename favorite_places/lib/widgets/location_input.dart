@@ -90,7 +90,7 @@ class _LocationInputState extends State<LocationInput> {
 
     _savePlace(lat, lng);
 
-    void _selectOnMap() async {
+    void selectOnMap() async {
       final pickedLocation =
           await Navigator.of(context).push<LatLng>(MaterialPageRoute(
         builder: (ctx) => const MapScreen(),
@@ -144,12 +144,12 @@ class _LocationInputState extends State<LocationInput> {
           children: [
             TextButton.icon(
               onPressed: _getCurrentLocation,
-              label: Text('Get your location'),
+              label: const Text('Get your location'),
               icon: const Icon(Icons.location_on),
             ),
             TextButton.icon(
               onPressed: () {},
-              label: Text('Select on map'),
+              label: const Text('Select on map'),
               icon: const Icon(Icons.map),
             ),
           ],
