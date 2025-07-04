@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:chat_app/message_bubble.dart';
 
 class ChatMessages extends StatelessWidget {
-  ChatMessages({super.key});
+  const ChatMessages({super.key});
 
   final authenticatedUser = FirebaseAuth.instance.currentUser;
 
