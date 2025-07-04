@@ -28,7 +28,7 @@ class _AuthScreenState extends State<AuthScreen> {
   void _submit() async {
     final isValid = _form.currentState!.validate();
 
-    if (isValid || !_isLogin && _selectedImage == null) {
+    if (!isValid || !_isLogin && _selectedImage == null) {
       // show error message
       return;
     }
@@ -55,7 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .child('user_images')
             .child('${userCredentials.user!.uid}.jpg');
         await storageRef.putFile(_selectedImage!);
-        final imageUrl = storageRef.getDownloadURL();
+        final imageUrl = await storageRef.getDownloadURL();
 
         try {
           await FirebaseFirestore.instance
@@ -96,7 +96,7 @@ class _AuthScreenState extends State<AuthScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 30,
                   bottom: 20,
                   left: 20,
@@ -117,8 +117,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         children: [
                           if (!_isLogin)
                             UserImagePicker(
-                              onPickImage: (pickedImage) => {
-                                _selectedImage = pickedImage,
+                              onPickImage: (pickedImage) {
+                                _selectedImage = pickedImage;
                               },
                             ),
                           TextFormField(
@@ -141,23 +141,23 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                           ),
                           if (!_isLogin)
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: "Username",
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: "Username",
+                              ),
+                              enableSuggestions: false,
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.trim().length < 4) {
+                                  return 'Please enter a valid username (at least 4 characters)';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                _enteredUsername = value!;
+                              },
                             ),
-                            enableSuggestions: false,
-                            validator: (value) {
-                              if (value == null ||
-                                  value.isEmpty ||
-                                  value.trim().length < 4) {
-                                return 'Please enter a valid username (at least 4 characters)';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _enteredUsername = value!;
-                            },
-                          ),
                           TextFormField(
                             decoration: InputDecoration(labelText: 'Password'),
                             obscureText: true,
