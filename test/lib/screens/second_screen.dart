@@ -45,11 +45,7 @@ class _SecondScreenState extends State<SecondScreen> {
       final imageLink = imageData['message'];
 
       setState(() {
-        notes.insert(0, {
-          'type': 'api',
-          'fact': factText,
-          'image': imageLink,
-        });
+        notes.insert(0, {'type': 'api', 'fact': factText, 'image': imageLink});
       });
     } catch (error) {
       print('Error fetching data: $error');
@@ -63,44 +59,64 @@ class _SecondScreenState extends State<SecondScreen> {
   }
 
   void _editNote(int index) {
-  final oldNote = notes[index]['note']!;
-  final editController = TextEditingController(text: oldNote);
+    final oldNote = notes[index]['note']!;
+    final editController = TextEditingController(text: oldNote);
 
-  showDialog(
-    context: context,
-    builder: (ctx) => AlertDialog(
-      title: const Text('Edit Note'),
-      content: TextField(
-        controller: editController,
-        autofocus: true,
-        decoration: const InputDecoration(
-          hintText: 'Update your note',
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Colors.white,
+        title: const Text('Επεξεργασία', style: TextStyle(color: Colors.black)),
+        content: TextField(
+          controller: editController,
+          autofocus: true,
+          cursorColor: Colors.black, // Cursor color black
+          decoration: const InputDecoration(
+            hintText: 'Επεξεργασία της σημείωσης',
+            hintStyle: TextStyle(color: Colors.grey),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+              ), // underline when not focused
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.black,
+              ), // underline when focused
+            ),
+          ),
+          style: const TextStyle(color: Colors.black), // input text color black
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: const Text(
+              'Άκυρο',
+              style: TextStyle(color: Colors.black), // button text black
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final updatedText = editController.text.trim();
+              if (updatedText.isNotEmpty) {
+                setState(() {
+                  notes[index]['note'] = updatedText;
+                });
+              }
+              Navigator.of(ctx).pop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black, // button background black
+              foregroundColor: Colors.white, // button text white
+            ),
+            child: const Text('Οκ'),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(ctx).pop();
-          },
-          child: const Text('Cancel'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            final updatedText = editController.text.trim();
-            if (updatedText.isNotEmpty) {
-              setState(() {
-                notes[index]['note'] = updatedText;
-              });
-            }
-            Navigator.of(ctx).pop();
-          },
-          child: const Text('Save'),
-        ),
-      ],
-    ),
-  );
-}
-
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,11 +130,9 @@ class _SecondScreenState extends State<SecondScreen> {
             icon: const Icon(Icons.logout),
             tooltip: 'Logout',
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (ctx) => const FirstScreen(),
-                ),
-              );
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (ctx) => const FirstScreen()));
             },
           ),
         ],
@@ -127,7 +141,7 @@ class _SecondScreenState extends State<SecondScreen> {
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.only(top: 16),
-          
+
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -138,119 +152,161 @@ class _SecondScreenState extends State<SecondScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _noteController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                           borderSide: BorderSide(color: Colors.black),
+              Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _noteController,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                              width: 1.5,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black,
+                              width: 2,
+                            ),
+                          ),
+                          // optional: to remove the default purple underline under the label if any
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  CircleAvatar(
-                    backgroundColor: Colors.green,
-                    child: IconButton(
-                      icon: const Icon(Icons.add, color: Colors.white),
-                      onPressed: _addNote,
+
+                    const SizedBox(width: 10),
+                    CircleAvatar(
+                      backgroundColor: Colors.green,
+                      child: IconButton(
+                        icon: const Icon(Icons.add, color: Colors.white),
+                        onPressed: _addNote,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  CircleAvatar(
-                    backgroundColor: const Color.fromARGB(255, 224, 119, 38),
-                    child: TextButton(
+                    const SizedBox(width: 10),
+                    ElevatedButton(
                       onPressed: _getData,
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(20), // size of the circle
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          224,
+                          119,
+                          38,
+                        ),
+                      ),
                       child: const Text(
                         'api',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
               // const Text('your jobs:', style: TextStyle(fontSize: 16)),
               const SizedBox(height: 10),
               Expanded(
-  child: notes.isEmpty
-      ? const Center(child: Text('No notes yet!'))
-      : Container(
-          color: Colors.black, // background behind list items
-          child: ListView.builder(
-            itemCount: notes.length,
-            itemBuilder: (ctx, index) {
-              final note = notes[index];
-
-              if (note['type'] == 'api') {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Card(
-                    color: Colors.grey[850], // dark grey background like in screenshot
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.network(
-                          note['image']!,
-                          width: double.infinity,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+                child: notes.isEmpty
+                    ? Container(
+                        color: Colors.black,
+                        child: const Center(
                           child: Text(
-                            note['fact']!,
-                            style: const TextStyle(color: Colors.white),
+                            'No notes yet!',
+                            style: TextStyle(color: Colors.white70),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: IconButton(
-                            icon: const Icon(Icons.delete),
-                            color: Colors.red,
-                            onPressed: () => _removeNote(index),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              } else {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Card(
-                    color: Colors.grey[850], // dark grey background
-                    child: ListTile(
-                      title: Text(
-                        note['note']!,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            color: Colors.white,
-                            onPressed: () => _editNote(index),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            color: Colors.red,
-                            onPressed: () => _removeNote(index),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }
-            },
-          ),
-        ),
-),
+                      )
+                    : Container(
+                        color: Colors.black, // background behind list items
+                        child: ListView.builder(
+                          itemCount: notes.length,
+                          itemBuilder: (ctx, index) {
+                            final note = notes[index];
 
+                            if (note['type'] == 'api') {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                ),
+                                child: Card(
+                                  color: Colors
+                                      .grey[850], // dark grey background like in screenshot
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Image.network(
+                                        note['image']!,
+                                        width: double.infinity,
+                                        height: 200,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          note['fact']!,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          color: Colors.red,
+                                          onPressed: () => _removeNote(index),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                ),
+                                child: Card(
+                                  color:
+                                      Colors.grey[850], // dark grey background
+                                  child: ListTile(
+                                    title: Text(
+                                      note['note']!,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          color: Colors.white,
+                                          onPressed: () => _editNote(index),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          color: Colors.red,
+                                          onPressed: () => _removeNote(index),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+              ),
             ],
           ),
         ),
