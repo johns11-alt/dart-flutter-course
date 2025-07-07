@@ -48,6 +48,8 @@ class _SecondScreenState extends State<SecondScreen> {
       final imageData = json.decode(imageResponse.body);
       final imageLink = imageData['message'];
 
+      print(factData['fact']);
+
       setState(() {
         notes.insert(0, {'type': 'api', 'fact': factText, 'image': imageLink});
       });
@@ -73,7 +75,7 @@ class _SecondScreenState extends State<SecondScreen> {
         });
       },
     );
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +89,46 @@ class _SecondScreenState extends State<SecondScreen> {
             icon: const Icon(Icons.logout),
             tooltip: 'Logout',
             onPressed: () {
-              Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (ctx) => const FirstScreen()));
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  backgroundColor: Colors.white,
+                  title: const Text(
+                    'Επιβεβαίωση Αποσύνδεσης',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  content: const Text(
+                    'Είστε σίγουροι ότι θέλετε να αποσυνδεθείτε;',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop(); // Close dialog
+                      },
+                      child: const Text(
+                        'Άκυρο',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop(); // Close dialog
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (ctx) => const FirstScreen()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Αποσύνδεση'),
+                    ),
+                  ],
+                ),
+              );
             },
+
           ),
         ],
       ),
@@ -102,7 +140,6 @@ class _SecondScreenState extends State<SecondScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               NoteInput(
                 noteController: _noteController,
                 onAddNote: _addNote,
