@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:test/screens/first_screen.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import 'package:test/sections/simple_notes.dart';
+import 'package:test/sections/api_notes.dart';
+import 'package:test/sections/note_input.dart';
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({super.key});
@@ -145,73 +149,12 @@ class _SecondScreenState extends State<SecondScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: const Text(
-                  'Προσθήκη σημείωσης:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
+              NoteInput(
+                noteController: _noteController,
+                onAddNote: _addNote,
+                onGetData: _getData,
               ),
-              const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.only(left: 5, right: 5),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _noteController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                              width: 1.5,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                              width: 2,
-                            ),
-                          ),
-                          // optional: to remove the default purple underline under the label if any
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                    ),
 
-                    const SizedBox(width: 10),
-                    CircleAvatar(
-                      backgroundColor: Colors.green,
-                      child: IconButton(
-                        icon: const Icon(Icons.add, color: Colors.white),
-                        onPressed: _addNote,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed: _getData,
-                      style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(20), // size of the circle
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          224,
-                          119,
-                          38,
-                        ),
-                      ),
-                      child: const Text(
-                        'api',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              // const Text('your jobs:', style: TextStyle(fontSize: 16)),
-              const SizedBox(height: 10),
               Expanded(
                 child: notes.isEmpty
                     ? Container(
@@ -231,76 +174,17 @@ class _SecondScreenState extends State<SecondScreen> {
                             final note = notes[index];
 
                             if (note['type'] == 'api') {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 4,
-                                ),
-                                child: Card(
-                                  color: Colors
-                                      .grey[850], // dark grey background like in screenshot
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Image.network(
-                                        note['image']!,
-                                        width: double.infinity,
-                                        height: 200,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          note['fact']!,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: IconButton(
-                                          icon: const Icon(Icons.delete),
-                                          color: Colors.red,
-                                          onPressed: () => _removeNote(index),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                              return ApiNotes(
+                                note: note,
+                                index: index,
+                                onDelete: _removeNote,
                               );
                             } else {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 4,
-                                ),
-                                child: Card(
-                                  color:
-                                      Colors.grey[850], // dark grey background
-                                  child: ListTile(
-                                    title: Text(
-                                      note['note']!,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.edit),
-                                          color: Colors.white,
-                                          onPressed: () => _editNote(index),
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.delete),
-                                          color: Colors.red,
-                                          onPressed: () => _removeNote(index),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                              return SimpleNotes(
+                                note: note,
+                                index: index,
+                                onEdit: _editNote,
+                                onDelete: _removeNote,
                               );
                             }
                           },
