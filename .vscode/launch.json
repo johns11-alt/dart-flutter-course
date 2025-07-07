@@ -1,0 +1,268 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "ch7_todo",
+            "cwd": "ch7_todo",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ch7_todo (profile mode)",
+            "cwd": "ch7_todo",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ch7_todo (release mode)",
+            "cwd": "ch7_todo",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "ch7_todo2",
+            "cwd": "ch7_todo2",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ch7_todo2 (profile mode)",
+            "cwd": "ch7_todo2",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ch7_todo2 (release mode)",
+            "cwd": "ch7_todo2",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "chapter4_quiz_app",
+            "cwd": "chapter4_quiz_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "chapter4_quiz_app (profile mode)",
+            "cwd": "chapter4_quiz_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "chapter4_quiz_app (release mode)",
+            "cwd": "chapter4_quiz_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "chapter5_expenses",
+            "cwd": "chapter5_expenses",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "chapter5_expenses (profile mode)",
+            "cwd": "chapter5_expenses",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "chapter5_expenses (release mode)",
+            "cwd": "chapter5_expenses",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "chat_app",
+            "cwd": "chat_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "chat_app (profile mode)",
+            "cwd": "chat_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "chat_app (release mode)",
+            "cwd": "chat_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "expense_tracker",
+            "cwd": "expense_tracker",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "expense_tracker (profile mode)",
+            "cwd": "expense_tracker",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "expense_tracker (release mode)",
+            "cwd": "expense_tracker",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "favorite_places",
+            "cwd": "favorite_places",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "favorite_places (profile mode)",
+            "cwd": "favorite_places",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "favorite_places (release mode)",
+            "cwd": "favorite_places",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "first_app",
+            "cwd": "first_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "first_app (profile mode)",
+            "cwd": "first_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "first_app (release mode)",
+            "cwd": "first_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "meals",
+            "cwd": "meals",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "meals (profile mode)",
+            "cwd": "meals",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "meals (release mode)",
+            "cwd": "meals",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "quiz_app",
+            "cwd": "quiz_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "quiz_app (profile mode)",
+            "cwd": "quiz_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "quiz_app (release mode)",
+            "cwd": "quiz_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "roll_dice_app",
+            "cwd": "roll_dice_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "roll_dice_app (profile mode)",
+            "cwd": "roll_dice_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "roll_dice_app (release mode)",
+            "cwd": "roll_dice_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "shopping_list",
+            "cwd": "shopping_list",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "shopping_list (profile mode)",
+            "cwd": "shopping_list",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "shopping_list (release mode)",
+            "cwd": "shopping_list",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "test",
+            "cwd": "test",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "test (profile mode)",
+            "cwd": "test",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "test (release mode)",
+            "cwd": "test",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
