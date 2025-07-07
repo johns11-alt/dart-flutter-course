@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:test/screens/first_screen.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({super.key});
@@ -27,10 +30,30 @@ class _SecondScreenState extends State<SecondScreen> {
     }
   }
 
+  void _getData() async {
+    final apiText = await Uri.parse('https://catfact.ninja/fact');
+    final apiImage = await Uri.parse('https://dog.ceo/api/breeds/image/random');
+    print(apiText);
+    print(apiImage);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Appbar Title')),
+      appBar: AppBar(
+        title: const Text('Appbar Title'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            onPressed: () {
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (ctx) => const FirstScreen()));
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -60,43 +83,52 @@ class _SecondScreenState extends State<SecondScreen> {
                     onPressed: _addNote,
                   ),
                 ),
+                const SizedBox(width: 10),
+                CircleAvatar(
+                  backgroundColor: const Color.fromARGB(255, 224, 119, 38),
+                  child: TextButton(
+                    onPressed: _getData,
+                    child: const Text(
+                      'api',
+                      style: TextStyle(
+                        color: Colors
+                            .white, // To make text visible on colored background
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Οι σημειώσεις σου:',
-              style: TextStyle(fontSize: 16),
-            ),
+            const Text('your jobs:', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 10),
             Expanded(
-  child: notes.isEmpty
-      ? const Center(child: Text('No notes yet!'))
-      : ListView(
-  children: notes
-      .map(
-        (note) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Card(
-            child: ListTile(
-              title: Text(note),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                color: Colors.red,
-                onPressed: () {
-                  setState(() {
-                    notes.remove(note);
-                  });
-                },
-              ),
+              child: notes.isEmpty
+                  ? const Center(child: Text('No notes yet!'))
+                  : ListView(
+                      children: notes
+                          .map(
+                            (note) => Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Card(
+                                child: ListTile(
+                                  title: Text(note),
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.delete),
+                                    color: Colors.red,
+                                    onPressed: () {
+                                      setState(() {
+                                        notes.remove(note);
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
             ),
-          ),
-        ),
-      )
-      .toList(),
-)
-
-),
-
           ],
         ),
       ),
