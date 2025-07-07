@@ -11,12 +11,13 @@ class SecondScreen extends StatefulWidget {
 }
 
 class _SecondScreenState extends State<SecondScreen> {
-  final List<String> notes = ['job 1', 'job 2', 'job 3'];
+  // Change from List<String> to List<Map<String, String>>
+  final List<Map<String, String>> notes = [];
   final _noteController = TextEditingController();
 
   @override
   void dispose() {
-    _noteController.dispose(); // Always dispose controllers
+    _noteController.dispose();
     super.dispose();
   }
 
@@ -24,32 +25,60 @@ class _SecondScreenState extends State<SecondScreen> {
     final newNote = _noteController.text.trim();
     if (newNote.isNotEmpty) {
       setState(() {
-        notes.add(newNote);
+        notes.insert(0, {'type': 'text', 'note': newNote});
         _noteController.clear();
       });
     }
   }
 
   void _getData() async {
-    final apiText = await Uri.parse('https://catfact.ninja/fact');
-    final apiImage = await Uri.parse('https://dog.ceo/api/breeds/image/random');
-    print(apiText);
-    print(apiImage);
+    final factUrl = Uri.parse('https://catfact.ninja/fact');
+    final imageUrl = Uri.parse('https://dog.ceo/api/breeds/image/random');
+
+    try {
+      final factResponse = await http.get(factUrl);
+      final factData = json.decode(factResponse.body);
+      final factText = factData['fact'];
+
+      final imageResponse = await http.get(imageUrl);
+      final imageData = json.decode(imageResponse.body);
+      final imageLink = imageData['message'];
+
+      setState(() {
+        notes.insert(0, {
+          'type': 'api',
+          'fact': factText,
+          'image': imageLink,
+        });
+      });
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
+
+  void _removeNote(int index) {
+    setState(() {
+      notes.removeAt(index);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Appbar Title'),
+        title: const Text('Notes App'),
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.black,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Logout',
             onPressed: () {
-              Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (ctx) => const FirstScreen()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (ctx) => const FirstScreen(),
+                ),
+              );
             },
           ),
         ],
@@ -71,7 +100,6 @@ class _SecondScreenState extends State<SecondScreen> {
                     controller: _noteController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Enter your note',
                     ),
                   ),
                 ),
@@ -90,10 +118,7 @@ class _SecondScreenState extends State<SecondScreen> {
                     onPressed: _getData,
                     child: const Text(
                       'api',
-                      style: TextStyle(
-                        color: Colors
-                            .white, // To make text visible on colored background
-                      ),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -105,28 +130,56 @@ class _SecondScreenState extends State<SecondScreen> {
             Expanded(
               child: notes.isEmpty
                   ? const Center(child: Text('No notes yet!'))
-                  : ListView(
-                      children: notes
-                          .map(
-                            (note) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: Card(
-                                child: ListTile(
-                                  title: Text(note),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.delete),
-                                    color: Colors.red,
-                                    onPressed: () {
-                                      setState(() {
-                                        notes.remove(note);
-                                      });
-                                    },
+                  : ListView.builder(
+                      itemCount: notes.length,
+                      itemBuilder: (ctx, index) {
+                        final note = notes[index];
+
+                        if (note['type'] == 'api') {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Card(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image.network(
+                                    note['image']!,
+                                    width: double.infinity,
+                                    height: 200,
+                                    fit: BoxFit.cover,
                                   ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(note['fact']!),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      color: Colors.red,
+                                      onPressed: () => _removeNote(index),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Card(
+                              child: ListTile(
+                                title: Text(note['note']!),
+                                trailing: IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  color: Colors.red,
+                                  onPressed: () => _removeNote(index),
                                 ),
                               ),
                             ),
-                          )
-                          .toList(),
+                          );
+                        }
+                      },
                     ),
             ),
           ],
