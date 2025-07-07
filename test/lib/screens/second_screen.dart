@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:test/screens/first_screen.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:test/sections/simple_notes.dart';
 import 'package:test/sections/api_notes.dart';
 import 'package:test/sections/note_input.dart';
+import 'package:test/sections/edit_note.dart'; // adjust path accordingly
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({super.key});
@@ -64,63 +64,16 @@ class _SecondScreenState extends State<SecondScreen> {
 
   void _editNote(int index) {
     final oldNote = notes[index]['note']!;
-    final editController = TextEditingController(text: oldNote);
-
-    showDialog(
+    showEditNoteDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: Colors.white,
-        title: const Text('Επεξεργασία', style: TextStyle(color: Colors.black)),
-        content: TextField(
-          controller: editController,
-          autofocus: true,
-          cursorColor: Colors.black, // Cursor color black
-          decoration: const InputDecoration(
-            hintText: 'Επεξεργασία της σημείωσης',
-            hintStyle: TextStyle(color: Colors.grey),
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-              ), // underline when not focused
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.black,
-              ), // underline when focused
-            ),
-          ),
-          style: const TextStyle(color: Colors.black), // input text color black
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text(
-              'Άκυρο',
-              style: TextStyle(color: Colors.black), // button text black
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final updatedText = editController.text.trim();
-              if (updatedText.isNotEmpty) {
-                setState(() {
-                  notes[index]['note'] = updatedText;
-                });
-              }
-              Navigator.of(ctx).pop();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black, // button background black
-              foregroundColor: Colors.white, // button text white
-            ),
-            child: const Text('Οκ'),
-          ),
-        ],
-      ),
+      initialText: oldNote,
+      onSave: (updatedText) {
+        setState(() {
+          notes[index]['note'] = updatedText;
+        });
+      },
     );
-  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +102,7 @@ class _SecondScreenState extends State<SecondScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               NoteInput(
                 noteController: _noteController,
                 onAddNote: _addNote,

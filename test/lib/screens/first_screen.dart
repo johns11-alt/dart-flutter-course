@@ -23,6 +23,7 @@ class _FirstScreenState extends State<FirstScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Wrong password man'),
+          backgroundColor: Color.fromARGB(255, 244, 92, 54),
         ),
       );
     }
@@ -87,6 +88,12 @@ class _FirstScreenState extends State<FirstScreen> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.black,
                                   foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0)
+                                  ),
+                                  textStyle: TextStyle(
+                                    fontSize: 16
+                                  )
                                 ),
                                 child: const Text('Είσοδος'),
                               ),
