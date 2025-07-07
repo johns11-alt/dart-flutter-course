@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:test/sections/simple_notes.dart';
 import 'package:test/sections/api_notes.dart';
 import 'package:test/sections/note_input.dart';
-import 'package:test/sections/edit_note.dart'; // adjust path accordingly
+import 'package:test/sections/edit_note.dart';
+import 'package:test/sections/logout_dialog.dart';
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({super.key});
@@ -89,46 +90,8 @@ class _SecondScreenState extends State<SecondScreen> {
             icon: const Icon(Icons.logout),
             tooltip: 'Logout',
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (ctx) => AlertDialog(
-                  backgroundColor: Colors.white,
-                  title: const Text(
-                    'Επιβεβαίωση Αποσύνδεσης',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  content: const Text(
-                    'Είστε σίγουροι ότι θέλετε να αποσυνδεθείτε;',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop(); // Close dialog
-                      },
-                      child: const Text(
-                        'Άκυρο',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop(); // Close dialog
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (ctx) => const FirstScreen()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Αποσύνδεση'),
-                    ),
-                  ],
-                ),
-              );
+              showLogoutDialog(context);
             },
-
           ),
         ],
       ),
@@ -149,7 +112,7 @@ class _SecondScreenState extends State<SecondScreen> {
               Expanded(
                 child: notes.isEmpty
                     ? Container(
-                        color: Colors.black,
+                        color: const Color.fromARGB(255, 51, 46, 46),
                         child: const Center(
                           child: Text(
                             'No notes yet!',
@@ -158,7 +121,7 @@ class _SecondScreenState extends State<SecondScreen> {
                         ),
                       )
                     : Container(
-                        color: Colors.black, // background behind list items
+                        color: Color.fromARGB(255, 51, 46, 46), // background behind list items
                         child: ListView.builder(
                           itemCount: notes.length,
                           itemBuilder: (ctx, index) {
@@ -182,6 +145,19 @@ class _SecondScreenState extends State<SecondScreen> {
                         ),
                       ),
               ),
+               Container(
+          width: double.infinity,
+          color: Colors.black,
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: const Text(
+            '©2020 Ime Informatics',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
             ],
           ),
         ),
