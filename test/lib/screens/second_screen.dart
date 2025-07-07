@@ -126,7 +126,7 @@ class _SecondScreenState extends State<SecondScreen> {
       body: Container(
         color: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(top: 16),
           
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
