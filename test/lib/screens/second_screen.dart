@@ -62,6 +62,46 @@ class _SecondScreenState extends State<SecondScreen> {
     });
   }
 
+  void _editNote(int index) {
+  final oldNote = notes[index]['note']!;
+  final editController = TextEditingController(text: oldNote);
+
+  showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: const Text('Edit Note'),
+      content: TextField(
+        controller: editController,
+        autofocus: true,
+        decoration: const InputDecoration(
+          hintText: 'Update your note',
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(ctx).pop();
+          },
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            final updatedText = editController.text.trim();
+            if (updatedText.isNotEmpty) {
+              setState(() {
+                notes[index]['note'] = updatedText;
+              });
+            }
+            Navigator.of(ctx).pop();
+          },
+          child: const Text('Save'),
+        ),
+      ],
+    ),
+  );
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,64 +175,82 @@ class _SecondScreenState extends State<SecondScreen> {
               // const Text('your jobs:', style: TextStyle(fontSize: 16)),
               const SizedBox(height: 10),
               Expanded(
-                child: notes.isEmpty
-                    ? const Center(child: Text('No notes yet!'))
-                    : Container(
-                      color: Colors.black,
-                      child: ListView.builder(
-                          
-                          itemCount: notes.length,
-                          itemBuilder: (ctx, index) {
-                            final note = notes[index];
-                              
-                            if (note['type'] == 'api') {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4),
-                                child: Card(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Image.network(
-                                        note['image']!,
-                                        width: double.infinity,
-                                        height: 200,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(note['fact']!),
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: IconButton(
-                                          icon: const Icon(Icons.delete),
-                                          color: Colors.red,
-                                          onPressed: () => _removeNote(index),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4),
-                                child: Card(
-                                  child: ListTile(
-                                    title: Text(note['note']!),
-                                    trailing: IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      color: Colors.red,
-                                      onPressed: () => _removeNote(index),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }
-                          },
+  child: notes.isEmpty
+      ? const Center(child: Text('No notes yet!'))
+      : Container(
+          color: Colors.black, // background behind list items
+          child: ListView.builder(
+            itemCount: notes.length,
+            itemBuilder: (ctx, index) {
+              final note = notes[index];
+
+              if (note['type'] == 'api') {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Card(
+                    color: Colors.grey[850], // dark grey background like in screenshot
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.network(
+                          note['image']!,
+                          width: double.infinity,
+                          height: 200,
+                          fit: BoxFit.cover,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            note['fact']!,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(
+                            icon: const Icon(Icons.delete),
+                            color: Colors.red,
+                            onPressed: () => _removeNote(index),
+                          ),
+                        ),
+                      ],
                     ),
-              ),
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Card(
+                    color: Colors.grey[850], // dark grey background
+                    child: ListTile(
+                      title: Text(
+                        note['note']!,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            color: Colors.white,
+                            onPressed: () => _editNote(index),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            color: Colors.red,
+                            onPressed: () => _removeNote(index),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+),
+
             ],
           ),
         ),
