@@ -17,7 +17,7 @@ Future<void> showLogoutDialog(BuildContext context) {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(ctx).pop(); // Close dialog
+            Navigator.of(ctx).pop();
           },
           child: const Text(
             'Άκυρο',
@@ -26,7 +26,7 @@ Future<void> showLogoutDialog(BuildContext context) {
         ),
         ElevatedButton(
           onPressed: () {
-            Navigator.of(ctx).pop(); // Close dialog
+            Navigator.of(ctx).pop();
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (ctx) => const FirstScreen()),
             );

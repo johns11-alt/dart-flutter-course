@@ -58,7 +58,7 @@ class _FirstScreenState extends State<FirstScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
-                          'assets/images/logo.jpg', // Replace with your image path
+                          'assets/images/logo.jpg',
                           height: 300,
                         ),
                         const SizedBox(height: 24),
