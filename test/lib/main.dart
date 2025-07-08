@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:test/screens/first_screen.dart';
-
-
+import 'package:provider/provider.dart';
+import 'package:test/notes_provider.dart';
 
 void main() {
-  // runApp(const ProviderScope(child: App()));
-  runApp(const App());
-  
+  runApp(
+    ChangeNotifierProvider(create: (_) => NotesProvider(), child: const App()),
+  );
 }
 
 class App extends StatelessWidget {
