@@ -18,6 +18,7 @@ class SecondScreen extends StatefulWidget {
 
 class _SecondScreenState extends State<SecondScreen> {
   final _noteController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -40,6 +41,10 @@ class _SecondScreenState extends State<SecondScreen> {
     final factUrl = Uri.parse('https://catfact.ninja/fact');
     final imageUrl = Uri.parse('https://dog.ceo/api/breeds/image/random');
 
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final factResponse = await http.get(factUrl);
       final factData = json.decode(factResponse.body);
@@ -55,6 +60,10 @@ class _SecondScreenState extends State<SecondScreen> {
       ).addNote({'type': 'api', 'fact': factText, 'image': imageLink});
     } catch (error) {
       print('Error fetching data: $error');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -106,41 +115,43 @@ class _SecondScreenState extends State<SecondScreen> {
                 onGetData: _getData,
               ),
               Expanded(
-                child: notes.isEmpty
-                    ? Container(
-                        color: const Color.fromARGB(255, 51, 46, 46),
-                        child: const Center(
-                          child: Text(
-                            'No notes yet!',
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        color: const Color.fromARGB(255, 51, 46, 46),
-                        child: ListView.builder(
-                          itemCount: notes.length,
-                          itemBuilder: (ctx, index) {
-                            final note = notes[index];
+                child: Container(
+                  color: const Color.fromARGB(255, 51, 46, 46),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(color: Colors.white),
+                        )
+                      : (notes.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  'No notes yet!',
+                                  style: TextStyle(color: Colors.white70),
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: notes.length,
+                                itemBuilder: (ctx, index) {
+                                  final note = notes[index];
 
-                            if (note['type'] == 'api') {
-                              return ApiNotes(
-                                note: note,
-                                index: index,
-                                onDelete: _removeNote,
-                              );
-                            } else {
-                              return SimpleNotes(
-                                note: note,
-                                index: index,
-                                onEdit: _editNote,
-                                onDelete: _removeNote,
-                              );
-                            }
-                          },
-                        ),
-                      ),
+                                  if (note['type'] == 'api') {
+                                    return ApiNotes(
+                                      note: note,
+                                      index: index,
+                                      onDelete: _removeNote,
+                                    );
+                                  } else {
+                                    return SimpleNotes(
+                                      note: note,
+                                      index: index,
+                                      onEdit: _editNote,
+                                      onDelete: _removeNote,
+                                    );
+                                  }
+                                },
+                              )),
+                ),
               ),
+
               Container(
                 width: double.infinity,
                 color: Colors.black,
